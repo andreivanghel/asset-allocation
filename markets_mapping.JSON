@@ -1,0 +1,20 @@
+{
+  "Cash": [
+    
+  ],
+  "Fixed Income": [
+    {"Market": "", "Index Name": "", "Index Ticker": ""},
+    {"Market": "", "Index Name": "", "Index Ticker": ""},
+    {"Market": "", "Index Name": "", "Index Ticker": ""}
+  ],
+  "Equities": [
+    {"Market": "", "Index Name": "", "Index Ticker": ""},
+    {"Market": "", "Index Name": "", "Index Ticker": ""},
+    {"Market": "", "Index Name": "", "Index Ticker": ""}
+  ],
+  "Alternative Investments": [
+    {"Market": "", "Index Name": "", "Index Ticker": ""},
+    {"Market": "", "Index Name": "", "Index Ticker": ""},
+    {"Market": "", "Index Name": "", "Index Ticker": ""}
+  ]
+}
