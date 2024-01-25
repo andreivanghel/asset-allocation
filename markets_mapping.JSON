@@ -8,9 +8,10 @@
     {"Market": "", "Index Name": "", "Index Ticker": ""}
   ],
   "Equities": [
-    {"Market": "", "Index Name": "", "Index Ticker": ""},
-    {"Market": "", "Index Name": "", "Index Ticker": ""},
-    {"Market": "", "Index Name": "", "Index Ticker": ""}
+    {"Market": "USA_LARGE_CAP", "Index Name": "S&P 500", "Index Ticker": "^GSPC"},
+    {"Market": "USA_SMALL_CAP", "Index Name": "Russell 2000", "Index Ticker": "^RUT"},
+    {"Market": "EUROPE_LARGE_CAP", "Index Name": "Euronext 100", "Index Ticker": "^N100"},
+    {"Market": "HONG_KONG_LARGE_CAP", "Index Name": "Hang Seng Index", "Index Ticker": "^HSI"}
   ],
   "Alternative Investments": [
     {"Market": "", "Index Name": "", "Index Ticker": ""},
