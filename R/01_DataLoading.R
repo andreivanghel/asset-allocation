@@ -10,4 +10,6 @@ library(jsonlite)
 
 # in scope asset classes and markets --------------------------------------
 
-asset_classes <- fromJSON("markets_mapping.JSON")
+asset_classes_config <- fromJSON("markets_mapping.JSON")
+
+
