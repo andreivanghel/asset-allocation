@@ -3,19 +3,45 @@
     
   ],
   "Fixed Income": [
-    {"Market": "", "Index Name": "", "Index Ticker": ""},
-    {"Market": "", "Index Name": "", "Index Ticker": ""},
-    {"Market": "", "Index Name": "", "Index Ticker": ""}
+    {"market": "", "index_name": "", "index_id_in_ds": ""},
+    {"market": "", "index_name": "", "index_id_in_ds": ""},
+    {"market": "", "index_name": "", "index_id_in_ds": ""}
   ],
   "Equities": [
-    {"Market": "USA_LARGE_CAP", "Index Name": "S&P 500", "Index Ticker": "^GSPC"},
-    {"Market": "USA_SMALL_CAP", "Index Name": "Russell 2000", "Index Ticker": "^RUT"},
-    {"Market": "EUROPE_LARGE_CAP", "Index Name": "Euronext 100", "Index Ticker": "^N100"},
-    {"Market": "HONG_KONG_LARGE_CAP", "Index Name": "Hang Seng Index", "Index Ticker": "^HSI"}
+    {
+      "market": "USA_LARGE_CAP", 
+      "index_name": "S&P 500", 
+      "data_source": "yahoo",
+      "index_id_in_ds": "^GSPC"
+    },
+    {
+      "market": "USA_SMALL_CAP", 
+      "index_name": "Russell 2000",
+      "data_source": "yahoo",
+      "index_id_in_ds": "^RUT"
+    },
+    {
+      "market": "EUROPE_LARGE_CAP", 
+      "index_name": "Euronext 100", 
+      "data_source": "yahoo",
+      "index_id_in_ds": "^N100"
+    },
+    {
+      "market": "HONG_KONG_LARGE_CAP", 
+      "index_name": "Hang Seng Index", 
+      "data_source": "yahoo",
+      "index_id_in_ds": "^HSI"
+    },
+    {
+      "market": "ASIA_PACIFIC_LARGE_MID_CAP", 
+      "index_name": "S&P Asia Pacific LargeMidCap", 
+      "data_source": "sp",
+      "index_id_in_ds": "348170"
+    }
   ],
   "Alternative Investments": [
-    {"Market": "", "Index Name": "", "Index Ticker": ""},
-    {"Market": "", "Index Name": "", "Index Ticker": ""},
-    {"Market": "", "Index Name": "", "Index Ticker": ""}
+    {"market": "", "index_name": "", "index_id_in_ds": ""},
+    {"market": "", "index_name": "", "index_id_in_ds": ""},
+    {"market": "", "index_name": "", "index_id_in_ds": ""}
   ]
 }

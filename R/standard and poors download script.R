@@ -53,7 +53,7 @@ stochasticWait(2, 3)
 
 ### click login
 remDr$findElement(using = "id", value = "login-button")$clickElement()
-
+stochasticWait(10, 3)
 
 # Find the export button within the div by class name
 data_files <- remDr$findElements(using = 'xpath', "//div[@class='export  enableGateKeeping']/a")
@@ -73,6 +73,7 @@ remDr$navigate("https://www.spglobal.com/spdji/en/idsexport/file.xls?hostIdentif
 # - Index name...
 # - URL (not necessarily needed...)
 
+# https://www.spglobal.com/spdji/en/idsexport/file.xls?hostIdentifier=48190c8c-42c4-46af-8d1a-0cd5db894797&redesignExport=true&languageId=1&selectedModule=PerformanceGraphView&selectedSubModule=Graph&yearFlag=tenYearFlag&indexId=348168
 # https://www.spglobal.com/spdji/en/idsexport/file.xls?hostIdentifier=48190c8c-42c4-46af-8d1a-0cd5db894797&redesignExport=true&languageId=1&selectedModule=PerformanceGraphView&selectedSubModule=Graph&yearFlag=tenYearFlag&indexId=348170
 # https://www.spglobal.com/spdji/en/idsexport/file.xls?hostIdentifier=48190c8c-42c4-46af-8d1a-0cd5db894797&redesignExport=true&languageId=1&selectedModule=PerformanceGraphView&selectedSubModule=Graph&yearFlag=oneYearFlag&indexId=348168
 # https://www.spglobal.com/spdji/en/idsexport/file.xls?hostIdentifier=48190c8c-42c4-46af-8d1a-0cd5db894797&redesignExport=true&languageId=1&selectedModule=PerformanceGraphView&selectedSubModule=Graph&yearFlag=tenYearFlag&indexId=92395506
