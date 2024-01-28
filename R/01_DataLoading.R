@@ -20,3 +20,9 @@ test <- yahoo_sourcing(asset_class_yahoo_subset = asset_classes_config[["Equitie
                        output_dir = "~/Documents/asset-allocation-data")
 sp <- sp_sourcing(asset_class_sp_subset = asset_classes_config[["Equities"]] %>% filter(data_source == "sp"),
                   output_dir = "/Users/andrei/Documents/asset-allocation-data")
+
+
+
+### TO DO 
+# -> parametrize output directories (raw data for each source)
+# -> 
