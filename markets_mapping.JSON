@@ -37,6 +37,12 @@
       "index_name": "S&P Asia Pacific LargeMidCap", 
       "data_source": "sp",
       "index_id_in_ds": "348170"
+    },
+    {
+      "market": "EMERGING_MARKETS_LARGE", 
+      "index_name": "S&P EM 100", 
+      "data_source": "sp",
+      "index_id_in_ds": "92354062"
     }
   ],
   "Alternative Investments": [
