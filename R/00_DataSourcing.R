@@ -33,9 +33,10 @@ outputDataNaming <- function(market, index_id, data_source){
 }
 
 # sourcing functions ------------------------------------------------------
-yahoo_sourcing <- function(asset_class_yahoo_subset, local_save = TRUE, output_dir = getwd()){
+yahoo_sourcing <- function(asset_class_yahoo_subset, local_save = TRUE, data_saving_config){
   
-  output_dir <- paste0(output_dir, "/yahoo/", Sys.Date())
+  output_dir <- data_saving_config %>% filter(data_source == "yahoo") %>% pull(output_dir)
+  output_dir <- paste0(output_dir, "/", Sys.Date())
   if(!dir.exists(output_dir)){
     dir.create(output_dir)
   }
@@ -69,9 +70,10 @@ yahoo_sourcing <- function(asset_class_yahoo_subset, local_save = TRUE, output_d
   
 }
 
-sp_sourcing <- function(asset_class_sp_subset, output_dir = getwd()){
+sp_sourcing <- function(asset_class_sp_subset, data_saving_config){
   
-  output_dir <- paste0(output_dir, "/sp/", Sys.Date())
+  output_dir <- data_saving_config %>% filter(data_source == "sp") %>% pull(output_dir)
+  output_dir <- paste0(output_dir, "/", Sys.Date())
   if(!dir.exists(output_dir)){
     dir.create(output_dir)
   }

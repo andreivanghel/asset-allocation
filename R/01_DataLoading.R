@@ -18,9 +18,9 @@ data_saving_config <- fromJSON("data_saving.JSON")
 
 
 test <- yahoo_sourcing(asset_class_yahoo_subset = asset_classes_config[["Equities"]] %>% filter(data_source == "yahoo"),
-                       output_dir = "~/Documents/asset-allocation-data")
+                       data_saving_config = data_saving_config)
 sp <- sp_sourcing(asset_class_sp_subset = asset_classes_config[["Equities"]] %>% filter(data_source == "sp"),
-                  output_dir = "/Users/andrei/Documents/asset-allocation-data")
+                  data_saving_config = data_saving_config)
 
 
 sp_load <- list.files("/Users/andrei/Documents/asset-allocation-data", full.names = TRUE) %>% as.data.frame() %>% 

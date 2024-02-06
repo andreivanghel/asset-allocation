@@ -39,10 +39,10 @@
       "index_id_in_ds": "348170"
     },
     {
-      "market": "EMERGING_MARKETS_LARGE", 
-      "index_name": "S&P EM 100", 
+      "market": "EMERGING_MARKETS_LARGE_MID_CAP", 
+      "index_name": "S&P LargeMidCap", 
       "data_source": "sp",
-      "index_id_in_ds": "92354062"
+      "index_id_in_ds": "348204"
     }
   ],
   "Alternative Investments": [
