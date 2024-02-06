@@ -27,8 +27,18 @@ getMostRecentFile <- function(dir_path){
   return(most_recent_file)
 }
 
+outputDataNaming <- function(market, index_id, data_source){
+  output_name <- paste0(market, "_", data_source, "_export")
+  return(output_name)
+}
+
 # sourcing functions ------------------------------------------------------
 yahoo_sourcing <- function(asset_class_yahoo_subset, local_save = TRUE, output_dir = getwd()){
+  
+  output_dir <- paste0(output_dir, "/yahoo/", Sys.Date())
+  if(!dir.exists(output_dir)){
+    dir.create(output_dir)
+  }
   
   yahoo_data <- asset_class_yahoo_subset %>% pull(index_id_in_ds) %>% 
     lapply(FUN = function(symbol) getSymbols(Symbols = symbol, auto.assign = FALSE))
@@ -60,6 +70,11 @@ yahoo_sourcing <- function(asset_class_yahoo_subset, local_save = TRUE, output_d
 }
 
 sp_sourcing <- function(asset_class_sp_subset, output_dir = getwd()){
+  
+  output_dir <- paste0(output_dir, "/sp/", Sys.Date())
+  if(!dir.exists(output_dir)){
+    dir.create(output_dir)
+  }
   
   username <- getPass("Enter email (S&P): ")
   password <- getPass("Enter password (S&P): ")
@@ -138,8 +153,8 @@ sp_sourcing <- function(asset_class_sp_subset, output_dir = getwd()){
     if (recent_file != paste0(output_dir, "/PerformanceGraphExport.xls")){
       stop("PerformanceGraphExport.xls is not the most recent file in output_dir!")
     }
-    
-    file.rename(recent_file, paste0(output_dir, "/", market, "_", index_id, "_sp_export_", Sys.Date(),".xls"))
+    file_name <- outputDataNaming(market, index_id, data_source = "sp")
+    file.rename(recent_file, paste0(output_dir, "/", file_name, "_", Sys.Date(),".xls"))
     
     flog.info(paste0(index_name, " data (", market,") exported successfully!"))
   }

@@ -1,0 +1,10 @@
+[
+  {
+    "data_source": "yahoo",
+    "output_dir": "/Users/andrei/Documents/asset-allocation-data/yahoo"
+  },
+  {
+    "data_source": "sp",
+    "output_dir": "/Users/andrei/Documents/asset-allocation-data/sp"
+  }
+]
