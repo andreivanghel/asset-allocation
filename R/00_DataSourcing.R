@@ -27,7 +27,7 @@ getMostRecentFile <- function(dir_path){
   return(most_recent_file)
 }
 
-outputDataNaming <- function(market, index_id, data_source){
+outputDataNaming <- function(market, index_id = NULL, data_source){
   output_name <- paste0(market, "_", data_source, "_export")
   return(output_name)
 }
@@ -44,10 +44,12 @@ yahoo_sourcing <- function(asset_class_yahoo_subset, local_save = TRUE, data_sav
   yahoo_data <- asset_class_yahoo_subset %>% pull(index_id_in_ds) %>% 
     lapply(FUN = function(symbol) getSymbols(Symbols = symbol, auto.assign = FALSE))
   
+  
   custom_output <- function(data, market, index_name, symbol){
     
     if(local_save){
-      fwrite(x = data, file = paste0(output_dir, "/", market, "_", symbol, "yahoo_export_",Sys.Date(), ".csv"))
+      file_name <- outputDataNaming(market, data_source = "yahoo")
+      fwrite(x = data, file = paste0(output_dir, "/", file_name,"_",Sys.Date(), ".csv"))
       flog.info(paste0(index_name, " data (", market,") exported successfully!"), data %>% head(), capture = T)
       return(NULL)
     }else{

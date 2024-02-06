@@ -100,7 +100,7 @@ dataLoading <- function(assetClassConfig, data_saving_config, sourcingDate){
 
 TEST <- dataLoading(assetClassConfig = asset_classes_config$Equities,
                     data_saving_config = data_saving_config,
-                    sourcingDate = "2024-01-28")
+                    sourcingDate = "2024-02-06")
 
 
 
