@@ -5,6 +5,7 @@ setwd("~/Documents/GitHub/asset-allocation")
 # libraries ---------------------------------------------------------------
 
 library(jsonlite)
+library(readxl)
 
 
 # custom scripts ----------------------------------------------------------
