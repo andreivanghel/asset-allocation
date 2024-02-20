@@ -31,7 +31,7 @@ sp_load <- list.files("/Users/andrei/Documents/asset-allocation-data", full.name
 
 
 ### TO DO 
-# -> parametrize output directories (raw data for each source)
+# -> parametrize output directories (raw data for each source) - DONE
 # -> create output_name function 
 # -> generalize loading function (from each source directory? using config file as input?)
 #
@@ -99,9 +99,9 @@ dataLoading <- function(assetClassConfig, data_saving_config, sourcingDate){
   return(output)
 }
 
-TEST <- dataLoading(assetClassConfig = asset_classes_config$Equities,
-                    data_saving_config = data_saving_config,
-                    sourcingDate = "2024-02-06")
+# TEST <- dataLoading(assetClassConfig = asset_classes_config$Equities,
+#                     data_saving_config = data_saving_config,
+#                     sourcingDate = "2024-02-06")
 
 
 
