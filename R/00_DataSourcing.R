@@ -166,3 +166,14 @@ sp_sourcing <- function(asset_class_sp_subset, data_saving_config){
   flog.info("All data from S&P extracted successfully")
   return(NULL)
 }
+
+dataSourcing <- function(assetClassConfig, data_saving_config){
+  
+  yahoo <- yahoo_sourcing(asset_class_yahoo_subset = assetClassConfig %>% filter(data_source == "yahoo"),
+                          data_saving_config = data_saving_config)
+  
+  sp <- sp_sourcing(asset_class_sp_subset = assetClassConfig %>% filter(data_source == "sp"),
+                    data_saving_config = data_saving_config)
+  
+  return(NULL)
+}
