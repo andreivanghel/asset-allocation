@@ -1,11 +1,13 @@
 {
   "Cash": [
-    
   ],
   "Fixed Income": [
-    {"market": "", "index_name": "", "index_id_in_ds": ""},
-    {"market": "", "index_name": "", "index_id_in_ds": ""},
-    {"market": "", "index_name": "", "index_id_in_ds": ""}
+    {
+      "market": "USA_GOV", 
+      "index_name": "S&P U.S. Government/Credit Bond Index", 
+      "data_source": "sp",
+      "index_id_in_ds": "92351588"
+    }
   ],
   "Equities": [
     {
@@ -46,8 +48,5 @@
     }
   ],
   "Alternative Investments": [
-    {"market": "", "index_name": "", "index_id_in_ds": ""},
-    {"market": "", "index_name": "", "index_id_in_ds": ""},
-    {"market": "", "index_name": "", "index_id_in_ds": ""}
   ]
 }
