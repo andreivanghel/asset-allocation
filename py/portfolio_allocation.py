@@ -8,7 +8,7 @@ from scipy.optimize import minimize
 
 ### TODO: 
 ### - output named vector / dataframe with ticker names from markowitz_portfolio() method
-### - within class __init__ method, define possible ways of calculating expected returns... / treating the time series
+### - within class' __init__ method, define possible ways of calculating expected returns... / treating the time series
 ### - create init method for passing price time series and then generating log returns -> expected_returns / cov_matrix
 ### - define type of input parameters in methods???
 
@@ -19,9 +19,17 @@ class AllocationModel:
         self.expected_returns = expected_returns
         self.cov_matrix = cov_matrix
 
-    def __init__(self, log_returns):
-        self.expected_returns = log_returns.mean()
-        self.cov_matrix = log_returns.cov()
+    def __init__(self, daily_log_returns):
+        self.expected_returns = daily_log_returns.mean()
+        self.cov_matrix = daily_log_returns.cov()
+
+
+    def get_expected_returns(self):
+        return(self.expected_returns)
+    
+    def get_cov_matrix(self):
+        return(self.cov_matrix)
+    
     
     def markowitz_portfolio(self):
         def get_Portfolio_Return(weights):
