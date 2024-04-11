@@ -15,13 +15,35 @@ from scipy.optimize import minimize
 
 
 class AllocationModel:
-    def __init__(self, expected_returns, cov_matrix):
-        self.expected_returns = expected_returns
-        self.cov_matrix = cov_matrix
+    def __init__(self, price_time_series: pd.DataFrame, frequency):
+        tickers = price_time_series.drop("DATE", axis = 1).columns
+        log_returns = price_time_series.set_index("DATE")[tickers].apply(lambda x: np.log(x) - np.log(x.shift(1)))
 
-    def __init__(self, daily_log_returns):
-        self.expected_returns = daily_log_returns.mean()
-        self.cov_matrix = daily_log_returns.cov()
+        ### data quality check
+        null_ratio = log_returns.isnull().sum() / log_returns.shape[0]
+        available_obs = log_returns.shape[0] - log_returns.isnull().sum()
+
+        print("Null ratio: \n", null_ratio)
+        print("Available observations: \n", available_obs)
+
+        null_threshold = 0.2
+        leng_threshold = 252 * 5
+
+        rel_NA_check = null_ratio[null_ratio > null_threshold]
+        abs_NA_check = available_obs[available_obs < leng_threshold]
+
+        if(len(rel_NA_check) > 0):
+            print("The following indexes have a ratio of NAs greater than", null_threshold, ": \n", rel_NA_check)
+        if(len(abs_NA_check) > 0):
+            print("The following indexes have a number of observation lower than", leng_threshold, ": \n", abs_NA_check)
+
+        ### calculate annual expected returns and variance / covariance matrix
+        self.expected_returns = log_returns.mean() * 252
+        self.cov_matrix = log_returns.cov() * 252
+
+
+
+        
 
 
     def get_expected_returns(self):
@@ -52,8 +74,9 @@ class AllocationModel:
                           method = 'SLSQP', 
                           bounds = bounds, 
                           constraints = constraints)
-
-        return (result.x)
+        
+        portfolio_weights = pd.Series(result.x, index=self.expected_returns.index)
+        return portfolio_weights
 
     def black_litterman_portfolio(self, views, tau=0.05):
         # Implementazione dell'algoritmo di Black-Litterman per l'allocazione del portafoglio
