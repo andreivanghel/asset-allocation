@@ -16,8 +16,8 @@ from scipy.optimize import minimize
 
 class AllocationModel:
     def __init__(self, price_time_series: pd.DataFrame, frequency):
-        tickers = price_time_series.drop("DATE", axis = 1).columns
-        log_returns = price_time_series.set_index("DATE")[tickers].apply(lambda x: np.log(x) - np.log(x.shift(1)))
+        self.tickers = price_time_series.drop("DATE", axis = 1).columns
+        log_returns = price_time_series.set_index("DATE")[self.tickers].apply(lambda x: np.log(x) - np.log(x.shift(1)))
 
         ### data quality check
         null_ratio = log_returns.isnull().sum() / log_returns.shape[0]
@@ -43,8 +43,9 @@ class AllocationModel:
 
 
 
-        
-
+    
+    def get_tickers(self):
+        return(self.tickers)
 
     def get_expected_returns(self):
         return(self.expected_returns)
@@ -52,16 +53,18 @@ class AllocationModel:
     def get_cov_matrix(self):
         return(self.cov_matrix)
     
+
+    def get_Portfolio_Return(self, weights):
+        return np.sum(self.expected_returns * weights)
+        
+    def get_Portfolio_Volatility(self, weights):
+        return np.sqrt(np.dot(weights.T, np.dot(self.cov_matrix, weights)))
+        
+    def get_Portfolio_Sharpe_Ratio(self, weights):
+        return self.get_Portfolio_Return(weights) / self.get_Portfolio_Volatility(weights)
     
     def markowitz_portfolio(self):
-        def get_Portfolio_Return(weights):
-            return np.sum(self.expected_returns * weights)
         
-        def get_Portfolio_Volatility(weights):
-            return np.sqrt(np.dot(weights.T, np.dot(self.cov_matrix, weights)))
-        
-        def get_Portfolio_Sharpe_Ratio(weights):
-            return get_Portfolio_Return(weights) / get_Portfolio_Volatility(weights)
         
         n_assets = len(self.expected_returns)
         initial_weights = np.array([1 / n_assets] * n_assets)
@@ -69,7 +72,7 @@ class AllocationModel:
         constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
         bounds = tuple((0, 1) for asset in range(n_assets))
 
-        result = minimize(lambda x: -get_Portfolio_Sharpe_Ratio(x), 
+        result = minimize(lambda x: -self.get_Portfolio_Sharpe_Ratio(x), 
                           initial_weights, 
                           method = 'SLSQP', 
                           bounds = bounds, 
