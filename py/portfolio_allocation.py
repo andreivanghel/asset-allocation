@@ -3,6 +3,8 @@
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
+from datetime import datetime
+from utils import get_forex_value
 
 
 
@@ -15,7 +17,7 @@ from scipy.optimize import minimize
 
 
 class AllocationModel:
-    def __init__(self, price_time_series: pd.DataFrame, frequency):
+    def __init__(self, price_time_series: pd.DataFrame, market_capitalization: dict):
         self.tickers = price_time_series.drop("DATE", axis = 1).columns
         log_returns = price_time_series.set_index("DATE")[self.tickers].apply(lambda x: np.log(x) - np.log(x.shift(1)))
 
@@ -40,6 +42,42 @@ class AllocationModel:
         ### calculate annual expected returns and variance / covariance matrix
         self.expected_returns = log_returns.mean() * 252
         self.cov_matrix = log_returns.cov() * 252
+
+        
+
+        ### get market capitalization in USD
+        def convert_mkt_cap(market_capitalization: dict, month: str):
+            month_data = market_capitalization[month]
+            forex_date = month_data["FX_SOURCE_DATE"]
+
+            # removing empty data frames and forex date from dictionary
+            cleaned_data = {key: value for key, value in month_data.items() if value and key != "FX_SOURCE_DATE"}
+            print("Non empty data frames in JSON: ", cleaned_data) #remove later
+            
+            market_cap_list = []
+
+            # Iterate through Fixed Income and Equities
+            for category in cleaned_data.values():
+                for asset in category:
+                    if asset["currency"] == "USD":
+                        # Multiply market_cap by 1 million
+                        market_cap = float(asset["market_cap"]) * 1000000 # parametrize with "unit" column
+                    else:
+                        # Convert market_cap to USD using get_forex_value function
+                        forex_value = get_forex_value(f"{asset['currency']}USD", datetime.now(), "Y73MRQV5EGUOELUU") * 1000000
+                        #print(forex_value)
+                        market_cap = float(asset["market_cap"]) * float(forex_value)
+                    # Append market and adjusted market_cap to the list
+                    market_cap_list.append({"market": asset["market"], "market_cap": market_cap})
+
+            # Create a DataFrame from the market_cap_list
+            df = pd.DataFrame(market_cap_list)
+            print("Market capitalization: \n", df)
+
+
+        convert_mkt_cap(market_capitalization, month = "march_2024")
+
+
 
 
 
