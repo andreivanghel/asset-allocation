@@ -2,6 +2,8 @@ import requests
 from datetime import datetime
 
 def get_forex_value(pair: str, date: datetime, api_key: str):
+    #api_key = "Y73MRQV5EGUOELUU"
+
     # Format date as YYYY-MM-DD string
     date_str = date.strftime('%Y-%m-%d')
 

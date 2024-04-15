@@ -52,12 +52,11 @@ class AllocationModel:
 
             # removing empty data frames and forex date from dictionary
             cleaned_data = {key: value for key, value in month_data.items() if value and key != "FX_SOURCE_DATE"}
-            print("Non empty data frames in JSON: ", cleaned_data) #remove later
             
             market_cap_list = []
 
             # Iterate through Fixed Income and Equities
-            for category in cleaned_data.values():
+            for asset_cla, category in cleaned_data.items():
                 for asset in category:
                     if asset["currency"] == "USD":
                         # Multiply market_cap by 1 million
@@ -68,14 +67,15 @@ class AllocationModel:
                         #print(forex_value)
                         market_cap = float(asset["market_cap"]) * float(forex_value)
                     # Append market and adjusted market_cap to the list
-                    market_cap_list.append({"market": asset["market"], "market_cap": market_cap})
+                    market_cap_list.append({"market": asset["market"], "market_cap": market_cap, "asset_class": asset_cla})
 
             # Create a DataFrame from the market_cap_list
-            df = pd.DataFrame(market_cap_list)
-            print("Market capitalization: \n", df)
+            market_cap = pd.DataFrame(market_cap_list)
+            print("Market capitalization: \n", market_cap)
+            return(market_cap)
 
 
-        convert_mkt_cap(market_capitalization, month = "march_2024")
+        self.market_cap = convert_mkt_cap(market_capitalization, month = "march_2024")
 
 
 
@@ -91,6 +91,9 @@ class AllocationModel:
     def get_cov_matrix(self):
         return(self.cov_matrix)
     
+    def get_market_cap(self):
+        return(self.market_cap)
+    
 
     def get_Portfolio_Return(self, weights):
         return np.sum(self.expected_returns * weights)
@@ -100,6 +103,13 @@ class AllocationModel:
         
     def get_Portfolio_Sharpe_Ratio(self, weights):
         return self.get_Portfolio_Return(weights) / self.get_Portfolio_Volatility(weights)
+    
+    def market_neutral_portfolio(self):
+        mkt_total = self.market_cap['market_cap'].sum()
+        pctgs = self.market_cap['market_cap'] / mkt_total
+
+        portfolio_weights = pd.Series(pctgs.values, index=self.market_cap['market'])
+        return portfolio_weights
     
     def markowitz_portfolio(self):
         
