@@ -67,7 +67,9 @@ class AllocationModel:
                         #print(forex_value)
                         market_cap = float(asset["market_cap"]) * float(forex_value)
                     # Append market and adjusted market_cap to the list
-                    market_cap_list.append({"market": asset["market"], "market_cap": market_cap, "asset_class": asset_cla})
+
+                    if asset["market"] in self.tickers:
+                        market_cap_list.append({"market": asset["market"], "market_cap": market_cap, "asset_class": asset_cla})
 
             # Create a DataFrame from the market_cap_list
             market_cap = pd.DataFrame(market_cap_list)
@@ -108,7 +110,7 @@ class AllocationModel:
         mkt_total = self.market_cap['market_cap'].sum()
         pctgs = self.market_cap['market_cap'] / mkt_total
 
-        portfolio_weights = pd.Series(pctgs.values, index=self.market_cap['market'])
+        portfolio_weights = pd.Series(pctgs.values, index=self.market_cap['market']).sort_index()
         return portfolio_weights
     
     def markowitz_portfolio(self):
@@ -126,7 +128,7 @@ class AllocationModel:
                           bounds = bounds, 
                           constraints = constraints)
         
-        portfolio_weights = pd.Series(result.x, index=self.expected_returns.index)
+        portfolio_weights = pd.Series(result.x, index=self.expected_returns.index).sort_index()
         return portfolio_weights
 
     def black_litterman_portfolio(self, views, tau=0.05):

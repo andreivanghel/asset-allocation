@@ -21,10 +21,20 @@ allo = AllocationModel(data, mkt_cap)
 expected_returns_mkw = allo.get_Portfolio_Return(allo.markowitz_portfolio())
 volatility_mkw = allo.get_Portfolio_Volatility(allo.markowitz_portfolio())
 
+expected_returns_mkt_neut = allo.get_Portfolio_Return(allo.market_neutral_portfolio())
+volatility_mkt_neut = allo.get_Portfolio_Volatility(allo.market_neutral_portfolio())
 
+st.markdown("# Asset allocation")
 
-st.metric(label="Expected returns", value = expected_returns_mkw, delta="Nothing here for now")
-st.metric(label="Volatility", value = volatility_mkw, delta="Nothing here for now")
+left_column_1, right_column_1 = st.columns(2)
+
+left_column_1.write("Market neutral portfolio")
+left_column_1.metric(label="Expected returns", value = round(expected_returns_mkt_neut * 100, 2), delta="Nothing here for now")
+left_column_1.metric(label="Volatility", value = round(volatility_mkt_neut * 100, 2), delta="Nothing here for now")
+
+right_column_1.write("Markowitz portfolio")
+right_column_1.metric(label="Expected returns", value = round(expected_returns_mkw * 100, 2), delta="Nothing here for now")
+right_column_1.metric(label="Volatility", value = round(volatility_mkw * 100, 2), delta="Nothing here for now")
 
 
 
