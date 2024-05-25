@@ -3,15 +3,24 @@
 import pandas as pd
 import numpy as np
 import great_expectations as ge
+import inputValidation
+from prettytable import PrettyTable
 
-def validate(pricesTimeSeriesDf: pd.DataFrame, missingValuesThreshold: float = 0.2):
-    ### TEST 1 - MISSING VALUES (place functions in external module)
-    na_rows = pricesTimeSeriesDf.isnull().sum()
-    test_metric = na_rows / (len(pricesTimeSeriesDf))
-    if test_metric > missingValuesThreshold:
-        print(f"Warning! Number of rows with missing values ({na_rows}) is higher than {missingValuesThreshold * 100}% of total rows ({len(pricesTimeSeriesDf)})")
-        print(f"Percentage of missing rows: {test_metric * 100}%")
-    
+def validate(pricesTimeSeriesDf: pd.DataFrame):
+    ### TEST 1 - MISSING VALUES
+    test_1_output = inputValidation.missingValuesTest(pricesTimeSeriesDf)
+
+    ### TEST 2 - TIME SERIES LENGTH
+    test_2_output = inputValidation.timeSeriesLengthTest(pricesTimeSeriesDf)
+
+    ### PRESENTING THE RESULTS
+    table = PrettyTable()
+    table.field_names = ["Test name", "Passed", "Test values"]
+
+    table.add_row([test_1_output["Test name"], test_1_output["Test outcome"], test_1_output["Test"]])
+    table.add_row([test_2_output["Test name"], test_2_output["Test outcome"], test_2_output["Test"]])
+
+    print(table)
     pass
 
 def getLogReturns(pricesTimeSeriesDf: pd.DataFrame):
