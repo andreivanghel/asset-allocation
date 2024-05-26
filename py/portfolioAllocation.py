@@ -2,7 +2,7 @@
 
 import pandas as pd
 import numpy as np
-import great_expectations as ge
+#import great_expectations as ge
 import inputValidation
 from prettytable import PrettyTable
 
