@@ -9,7 +9,7 @@ class aaModel(ABC):
 
     @abstractmethod
     def calculateEfficientFrontier(self):
-        pass
+        raise NotImplementedError("This method should be implemented by the subclass!")
 
 class markowitzModel(aaModel):
 
