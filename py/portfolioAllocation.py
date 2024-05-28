@@ -42,3 +42,16 @@ def getCorrelationMatrix(logReturnsDf: pd.DataFrame, calendarized: bool = False)
     cmat = logReturnsDf.corr()
     return cmat
 
+def getCovarianceMatrix(logReturnsDf: pd.DataFrame, calendarized: bool = False):
+    if calendarized: logReturnsDf = calendarizedReturns(logReturnsDf)
+    covmat = logReturnsDf.cov()
+    return covmat
+
+def portfolio_returns(weights, expected_returns):
+            returns = np.dot(weights, expected_returns)
+            return returns
+
+def portfolio_volatility(weights, covariance_matrix):
+            volatility = np.sqrt(np.dot(weights.T, np.dot(covariance_matrix, weights)))
+            return volatility
+
