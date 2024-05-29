@@ -72,16 +72,21 @@ yahoo_sourcing <- function(asset_class_yahoo_subset, local_save = TRUE, data_sav
   
 }
 
-sp_sourcing <- function(asset_class_sp_subset, data_saving_config){
+sp_sourcing <- function(asset_class_sp_subset, data_saving_config, username = NULL, password = NULL){
   
   output_dir <- data_saving_config %>% filter(data_source == "sp") %>% pull(output_dir)
   output_dir <- paste0(output_dir, "/", Sys.Date())
   if(!dir.exists(output_dir)){
     dir.create(output_dir)
   }
+
+  if(is.null(username)){
+    username <- getPass("Enter email (S&P): ")
+  }
+  if(is.null(password)){
+    password <- getPass("Enter password (S&P): ")
+  }
   
-  username <- getPass("Enter email (S&P): ")
-  password <- getPass("Enter password (S&P): ")
   
   ### R selenium connection
   eCaps <- list(
@@ -111,7 +116,7 @@ sp_sourcing <- function(asset_class_sp_subset, data_saving_config){
   stochasticWait(2, 1)
   
   remDr$findElement(using = "id", value = "user-login")$clickElement()
-  stochasticWait(3, 2)
+  stochasticWait(5, 2)
   
   remDr$findElement(using = "id", value = "email")$sendKeysToElement(list(username))
   stochasticWait(4, 2)
@@ -167,13 +172,15 @@ sp_sourcing <- function(asset_class_sp_subset, data_saving_config){
   return(NULL)
 }
 
-dataSourcing <- function(assetClassConfig, data_saving_config){
+dataSourcing <- function(assetClassConfig, data_saving_config, sp_username = NULL, sp_password = NULL){
   
   yahoo <- yahoo_sourcing(asset_class_yahoo_subset = assetClassConfig %>% filter(data_source == "yahoo"),
                           data_saving_config = data_saving_config)
   
   sp <- sp_sourcing(asset_class_sp_subset = assetClassConfig %>% filter(data_source == "sp"),
-                    data_saving_config = data_saving_config)
+                    data_saving_config = data_saving_config,
+                    username = sp_username,
+                    password = sp_password)
   
   return(NULL)
 }

@@ -28,7 +28,9 @@ sourcing_date <- Sys.Date()
 # raw data sourcing -------------------------------------------------------
 
 sapply(X = asset_classes_config, 
-       FUN = function(x) dataSourcing(assetClassConfig = x, data_saving_config = data_saving_config$raw_data_saving))
+       FUN = function(x) dataSourcing(assetClassConfig = x, data_saving_config = data_saving_config$raw_data_saving,
+                                      sp_username = "andreivanghel@gmail.com",
+                                      sp_password = ))
 
 
 # data loading ------------------------------------------------------------
@@ -88,5 +90,15 @@ list(asset_class = names(processed_data),
 
 
 
+##### TO BE IMPROVED
+
+tmp = list()
+for(i in 1:length(processed_data)){
+  tmp = c(tmp, processed_data[[i]])
+}
+processed_data_rename <- tmp %>% names() %>% 
+  lapply(FUN = function(market_name) tmp[[market_name]] %>% mutate(PRICE = as.numeric(PRICE)) %>% rename(!!market_name := !!as.symbol("PRICE")))
+data <- Reduce(function(x, y) merge(x, y, by = "DATE", all = TRUE), processed_data_rename)
+fwrite(data, file = paste0(output_dir, "/", "all_markets", "_", sourcing_date, ".csv"))
 
 
