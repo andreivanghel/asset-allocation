@@ -35,8 +35,10 @@ class markowitzModel(aaModel):
         self.markets_mapping = markets_mapping_filt
         self.markets_asset_classes = markets_asset_classes
     
-    def formatConstraints(self, allocation_constraints: pd.DataFrame, bounds: list) -> Tuple[tuple, list]:
+    def __formatConstraints(self, allocation_constraints: pd.DataFrame, short_selling:bool = False) -> Tuple[tuple, list]:
+        num_assets = len(self.expected_returns)
         constraints = []
+        bounds = list([0, 1] if not short_selling else [-math.inf, math.inf] for _ in range(num_assets))
 
         for _, row in allocation_constraints.iterrows():
             market = row["market"]
@@ -83,14 +85,14 @@ class markowitzModel(aaModel):
         num_assets = len(self.expected_returns)
         results = {'returns': [], 'volatility': [], 'weights': []}
 
-        bounds = list([0, 1] if not short_selling else [-math.inf, math.inf] for _ in range(num_assets))
-        print(bounds)
-        w_constraints = []
-
         if allocation_constraints is not None:
-            bounds, w_constraints = self.formatConstraints(allocation_constraints, bounds)
+            bounds, w_constraints = self.__formatConstraints(allocation_constraints = allocation_constraints, short_selling = short_selling)
+        else:
+            bounds = list([0, 1] if not short_selling else [-math.inf, math.inf] for _ in range(num_assets))
+            w_constraints = []
+
         w_constraints.append({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
-        print("bounds",bounds)
+        
         min_vol_result = minimize(lambda weights: pfAl.portfolio_volatility(weights, self.cov_matrix), num_assets * [1. / num_assets], method='SLSQP', bounds=bounds, constraints=w_constraints)
         max_ret_result = minimize(lambda weights: -pfAl.portfolio_returns(weights, self.expected_returns), num_assets * [1. / num_assets], method='SLSQP', bounds=bounds, constraints=w_constraints)
 
@@ -117,7 +119,7 @@ class markowitzModel(aaModel):
                 results['volatility'].append(volatility)
                 results['weights'].append(result.x)
             else:
-                print(f"Optimization failed for target {target_return}")
+                print(f"Optimization failed for target return: {target_return}!")
 
         efficient_frontier = pd.DataFrame(results)
         return efficient_frontier
