@@ -50,6 +50,7 @@ else:
 
 efficient_frontier = my_model.calculateEfficientFrontier(short_selling=short_selling)
 efficient_frontier['sharpe_ratio'] = (efficient_frontier['returns'] - risk_free_rate) / efficient_frontier['volatility']
+weights = efficient_frontier['weights']
 returns = efficient_frontier['returns']
 volatilities = efficient_frontier['volatility']
 max_sharpe_return, max_sharpe_volatility = portfolioAllocation.calculate_max_sharpe_ratio(returns, volatilities, risk_free_rate)
@@ -70,3 +71,27 @@ plt.plot([0, volatilities.max()], [risk_free_rate, volatilities.max()*max_sr+ris
 ax.legend()
 st.pyplot(fig)
 
+
+
+
+
+weights_df = pd.DataFrame(weights.tolist())
+asset_names = expected_returns.index
+
+# Plotting
+fig_2, ax_2 = plt.subplots(figsize=(12, 8))
+
+# Create stackplot
+ax_2.stackplot(volatilities, weights_df.T, labels=asset_names)
+
+# Adding labels and title
+ax_2.set_xlabel('Volatility')
+ax_2.set_ylabel('Composition (%)')
+ax_2.set_title('Portfolio Composition Across Efficient Frontier')
+
+
+# Adding legend
+ax_2.legend(title='Markets', bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=3)
+
+
+st.pyplot(fig_2)
