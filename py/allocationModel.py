@@ -38,7 +38,7 @@ class markowitzModel(aaModel):
     def __formatConstraints(self, allocation_constraints: pd.DataFrame, short_selling:bool = False) -> Tuple[tuple, list]:
         num_assets = len(self.expected_returns)
         constraints = []
-        bounds = list([0, 1] if not short_selling else [-math.inf, math.inf] for _ in range(num_assets))
+        bounds = list([0, 1] if not short_selling else [-1, 1] for _ in range(num_assets))
 
         for _, row in allocation_constraints.iterrows():
             market = row["market"]
@@ -88,7 +88,7 @@ class markowitzModel(aaModel):
         if allocation_constraints is not None:
             bounds, w_constraints = self.__formatConstraints(allocation_constraints = allocation_constraints, short_selling = short_selling)
         else:
-            bounds = list([0, 1] if not short_selling else [-math.inf, math.inf] for _ in range(num_assets))
+            bounds = list([0, 1] if not short_selling else [-1, 1] for _ in range(num_assets))
             w_constraints = []
 
         w_constraints.append({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
