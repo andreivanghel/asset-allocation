@@ -55,3 +55,8 @@ def portfolio_volatility(weights, covariance_matrix):
             volatility = np.sqrt(np.dot(weights.T, np.dot(covariance_matrix, weights)))
             return volatility
 
+def calculate_max_sharpe_ratio(returns, volatilities, risk_free_rate):
+    sharpe_ratios = (returns - risk_free_rate) / volatilities
+    max_sharpe_idx = np.argmax(sharpe_ratios)
+    return returns[max_sharpe_idx], volatilities[max_sharpe_idx]
+
