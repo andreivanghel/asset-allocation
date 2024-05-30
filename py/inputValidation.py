@@ -4,7 +4,7 @@ import numpy as np
 def missingValuesTest(pricesTimeSeriesDf: pd.DataFrame, maxAcceptableMissingRows: float = 0.2):    
 
     na_rows = len(pricesTimeSeriesDf) - len(pricesTimeSeriesDf.dropna())
-    test_metric = na_rows / (len(pricesTimeSeriesDf))
+    test_metric = round(na_rows / (len(pricesTimeSeriesDf)), 2)
 
     if test_metric > maxAcceptableMissingRows:
         print(f"Warning! Number of rows with missing values ({na_rows}) is higher than {maxAcceptableMissingRows * 100}% of total rows ({len(pricesTimeSeriesDf)})")
