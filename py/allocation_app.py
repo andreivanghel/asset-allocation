@@ -23,24 +23,28 @@ selected_markets_bool = [True] * len(market_names_full)
 st.title("Asset Allocation Model(s)")
 model_selection = st.selectbox(label="Select optimization model", options=implemented_models, index=None)
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     risk_free_rate = st.number_input(label = "Risk-free rate", min_value=0.0, max_value=0.10,format="%0.3f")
 with col2:
-    short_selling = st.toggle(label="Short selling", value = False)
+    market_selection = st.popover("Select markets")
     for index, market in enumerate(market_names_full):
-        selected_markets_bool[index] = st.checkbox(label=market)
+        selected_markets_bool[index] = market_selection.checkbox(label=market)
+with col3:
+    short_selling = st.toggle(label="Short selling", value = False)
+    calendarized = st.toggle(label="'Calendarized' log-returns", value = False)
 
+plot_right_lim = np.sqrt(np.diag(portfolioAllocation.getCovarianceMatrix(portfolioAllocation.getLogReturns(price_series), calendarized=calendarized)*252)).max()
 unselected_markets_names = [market for market, flag in zip(market_names_full, selected_markets_bool) if not flag]
 price_series = price_series.drop(unselected_markets_names, axis = 1)
 
 
 ### GENERATING LOG RETURNS
 log_returns = portfolioAllocation.getLogReturns(price_series)
-risk_free_rate = 0.03
-expected_returns = portfolioAllocation.getExpectedReturns(log_returns, calendarized = True) * 252
-cov_matrix = portfolioAllocation.getCovarianceMatrix(log_returns, calendarized = True) * 252
+expected_returns = portfolioAllocation.getExpectedReturns(log_returns, calendarized = calendarized) * 252
+cov_matrix = portfolioAllocation.getCovarianceMatrix(log_returns, calendarized = calendarized) * 252
+st_devs = np.sqrt(np.diag(cov_matrix))
 
 ### MARKETS MAPPING JSON
 with open('/Users/andrei/Documents/GitHub/asset-allocation/markets_mapping.JSON', 'r') as file:
@@ -49,11 +53,7 @@ with open('/Users/andrei/Documents/GitHub/asset-allocation/markets_mapping.JSON'
 
 
 
-
-
-
-
-    
+############## EFFICIENT FRONTIER
 
 if model_selection == implemented_models[0]:
     my_model = markowitzModel(expected_returns, cov_matrix, risk_free_rate, markets_mapping=market_mapping)
@@ -77,7 +77,7 @@ plt.ylabel('Expected Returns')
 plt.title('Efficient Frontier')
 plt.colorbar(scatter, label='Sharpe Ratio')
 plt.grid(True)
-plt.xlim(left=0)
+plt.xlim(left=0, right = plot_right_lim*1.05)
 plt.ylim(bottom=0)
 plt.plot([0, volatilities.max()], [risk_free_rate, volatilities.max()*max_sr+risk_free_rate], color='red', linestyle='--', linewidth=2,label='Capital Market Line (CML)')
 ax.legend()
@@ -91,17 +91,10 @@ weights_df = pd.DataFrame(weights.tolist())
 
 # Plotting
 fig_2, ax_2 = plt.subplots(figsize=(12, 8))
-
-# Create stackplot
 ax_2.stackplot(volatilities, weights_df.T, labels=market_names_full)
-
-# Adding labels and title
 ax_2.set_xlabel('Volatility')
 ax_2.set_ylabel('Composition (%)')
 ax_2.set_title('Portfolio Composition Across Efficient Frontier')
-
-
-# Adding legend
 ax_2.legend(title='Markets', bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=3)
 
 
