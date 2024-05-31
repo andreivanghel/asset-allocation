@@ -10,11 +10,31 @@ import json
 import plotly.express as px
 
 ############## INPUT DATA LOADING
+implemented_models = ["Markowitz", "Black-Litterman"]
 
 ### LOADING PRICE TIME SERIES
 price_series = pd.read_csv("/Users/andrei/Documents/asset-allocation-data/processed/2024-05-29/all_markets_2024-05-29.csv")
 price_series['DATE'] = pd.to_datetime(price_series['DATE'])
 price_series.set_index('DATE', inplace=True)
+market_names_full = price_series.columns.values
+selected_markets_bool = [True] * len(market_names_full)
+
+### SELECTING MARKETS
+st.title("Asset Allocation Model(s)")
+model_selection = st.selectbox(label="Select optimization model", options=implemented_models, index=None)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    risk_free_rate = st.number_input(label = "Risk-free rate", min_value=0.0, max_value=0.10,format="%0.3f")
+with col2:
+    short_selling = st.toggle(label="Short selling", value = False)
+    for index, market in enumerate(market_names_full):
+        selected_markets_bool[index] = st.checkbox(label=market)
+
+unselected_markets_names = [market for market, flag in zip(market_names_full, selected_markets_bool) if not flag]
+price_series = price_series.drop(unselected_markets_names, axis = 1)
+
 
 ### GENERATING LOG RETURNS
 log_returns = portfolioAllocation.getLogReturns(price_series)
@@ -28,19 +48,11 @@ with open('/Users/andrei/Documents/GitHub/asset-allocation/markets_mapping.JSON'
 
 
 
-implemented_models = ["Markowitz", "Black-Litterman"]
 
 
 
-st.title("Asset Allocation Model(s)")
-model_selection = st.selectbox(label="Select optimization model", options=implemented_models, index=None)
 
-col1, col2 = st.columns(2)
 
-with col1:
-    risk_free_rate = st.number_input(label = "Risk-free rate", min_value=0.0, max_value=0.10,format="%0.3f")
-with col2:
-    short_selling = st.toggle(label="Short selling", value = False)
     
 
 if model_selection == implemented_models[0]:
@@ -76,13 +88,12 @@ st.pyplot(fig)
 
 
 weights_df = pd.DataFrame(weights.tolist())
-asset_names = expected_returns.index
 
 # Plotting
 fig_2, ax_2 = plt.subplots(figsize=(12, 8))
 
 # Create stackplot
-ax_2.stackplot(volatilities, weights_df.T, labels=asset_names)
+ax_2.stackplot(volatilities, weights_df.T, labels=market_names_full)
 
 # Adding labels and title
 ax_2.set_xlabel('Volatility')
