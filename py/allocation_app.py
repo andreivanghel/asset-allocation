@@ -7,7 +7,6 @@ from allocationModel import markowitzModel
 import portfolioAllocation
 from datetime import datetime
 import json
-import plotly.express as px
 
 ############## INPUT DATA LOADING
 implemented_models = ["Markowitz", "Black-Litterman"]
@@ -23,28 +22,49 @@ selected_markets_bool = [True] * len(market_names_full)
 st.title("Asset Allocation Model(s)")
 model_selection = st.selectbox(label="Select optimization model", options=implemented_models, index=None)
 
-col1, col2, col3 = st.columns(3)
+with st.container(border=True):
+    col1, col2 = st.columns(2)
 
-with col1:
-    risk_free_rate = st.number_input(label = "Risk-free rate", min_value=0.0, max_value=0.10,format="%0.3f")
-with col2:
-    market_selection = st.popover("Select markets")
-    for index, market in enumerate(market_names_full):
-        selected_markets_bool[index] = market_selection.checkbox(label=market)
-with col3:
-    short_selling = st.toggle(label="Short selling", value = False)
-    calendarized = st.toggle(label="'Calendarized' log-returns", value = False)
+    with col1:
+        risk_free_rate = st.number_input(label = "Risk-free rate", min_value=0.0, max_value=0.10,format="%0.3f")
+    with col2:
+        short_selling = st.toggle(label="Short selling", value = False)
+        calendarized = st.toggle(label="'Calendarized' log-returns", value = True)
 
-plot_right_lim = np.sqrt(np.diag(portfolioAllocation.getCovarianceMatrix(portfolioAllocation.getLogReturns(price_series), calendarized=calendarized)*252)).max()
-unselected_markets_names = [market for market, flag in zip(market_names_full, selected_markets_bool) if not flag]
-price_series = price_series.drop(unselected_markets_names, axis = 1)
+    with st.expander("Select markets"):
+        for index, market in enumerate(market_names_full):
+            selected_markets_bool[index] = st.checkbox(label=market)
+
+    plot_right_lim = np.sqrt(np.diag(portfolioAllocation.getCovarianceMatrix(portfolioAllocation.getLogReturns(price_series), calendarized=calendarized)*252)).max()
 
 
-### GENERATING LOG RETURNS
-log_returns = portfolioAllocation.getLogReturns(price_series)
-expected_returns = portfolioAllocation.getExpectedReturns(log_returns, calendarized = calendarized) * 252
-cov_matrix = portfolioAllocation.getCovarianceMatrix(log_returns, calendarized = calendarized) * 252
-st_devs = np.sqrt(np.diag(cov_matrix))
+    unselected_markets_names = [market for market, flag in zip(market_names_full, selected_markets_bool) if not flag]
+    price_series = price_series.drop(unselected_markets_names, axis = 1)
+    selected_markets = price_series.columns
+
+    ### GENERATING LOG RETURNS
+    log_returns = portfolioAllocation.getLogReturns(price_series)
+    expected_returns = portfolioAllocation.getExpectedReturns(log_returns, calendarized = calendarized) * 252
+    cov_matrix = portfolioAllocation.getCovarianceMatrix(log_returns, calendarized = calendarized) * 252
+    st_devs = np.sqrt(np.diag(cov_matrix))
+    correlation_matrix = cov_matrix / np.outer(st_devs, st_devs)
+
+    expected_returns_pct = ["{:.2f}%".format(val * 100) for val in expected_returns]
+    st_devs_pct = ["{:.2f}%".format(val * 100) for val in st_devs]
+    results_df = pd.DataFrame({
+        "Expected Returns": expected_returns_pct,
+        "Standard Deviation": st_devs_pct
+    }, index=expected_returns.index)
+
+
+    with st.expander("Markets statistics"):
+        st.table(results_df)
+
+        cmat, ax = plt.subplots(figsize=(10, 8))
+        sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", ax=ax)
+        ax.set_title('Correlation Matrix')
+        st.pyplot(cmat)
+
 
 ### MARKETS MAPPING JSON
 with open('/Users/andrei/Documents/GitHub/asset-allocation/markets_mapping.JSON', 'r') as file:
@@ -91,7 +111,7 @@ weights_df = pd.DataFrame(weights.tolist())
 
 # Plotting
 fig_2, ax_2 = plt.subplots(figsize=(12, 8))
-ax_2.stackplot(volatilities, weights_df.T, labels=market_names_full)
+ax_2.stackplot(volatilities, weights_df.T, labels=selected_markets)
 ax_2.set_xlabel('Volatility')
 ax_2.set_ylabel('Composition (%)')
 ax_2.set_title('Portfolio Composition Across Efficient Frontier')

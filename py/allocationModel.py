@@ -9,7 +9,7 @@ from typing import Tuple
 class aaModel(ABC):
 
     @abstractmethod
-    def calculateEfficientFrontier(self):
+    def calculateEfficientFrontier(self) -> pd.DataFrame:
         raise NotImplementedError("This method should be implemented by the subclass!")
 
 class markowitzModel(aaModel):
@@ -81,7 +81,7 @@ class markowitzModel(aaModel):
                 
 
 
-    def calculateEfficientFrontier(self, short_selling: bool = False, volatilities: pd.Series = None, allocation_constraints: pd.DataFrame = None):
+    def calculateEfficientFrontier(self, short_selling: bool = False, volatilities: pd.Series = None, allocation_constraints: pd.DataFrame = None) -> pd.DataFrame:
         num_assets = len(self.expected_returns)
         results = {'returns': [], 'volatility': [], 'weights': []}
 
