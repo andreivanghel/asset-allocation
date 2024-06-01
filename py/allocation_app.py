@@ -67,7 +67,7 @@ with st.container(border=True):
 
 
 ### MARKETS MAPPING JSON
-with open('/Users/andrei/Documents/GitHub/asset-allocation/markets_mapping.JSON', 'r') as file:
+with open('markets_mapping.JSON', 'r') as file:
     market_mapping = json.load(file)
 
 
