@@ -12,7 +12,7 @@ import json
 implemented_models = ["Markowitz", "Black-Litterman"]
 
 ### LOADING PRICE TIME SERIES
-price_series = pd.read_csv("/Users/andrei/Documents/asset-allocation-data/processed/2024-05-29/all_markets_2024-05-29.csv")
+price_series = pd.read_csv("/all_markets_2024-05-29.csv")
 price_series['DATE'] = pd.to_datetime(price_series['DATE'])
 price_series.set_index('DATE', inplace=True)
 market_names_full = price_series.columns.values
