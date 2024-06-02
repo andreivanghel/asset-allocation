@@ -10,10 +10,6 @@ import json
 ############## INPUT DATA LOADING
 implemented_models = ["Markowitz", "Black-Litterman"]
 
-### MARKETS MAPPING JSON
-with open('markets_mapping.JSON', 'r') as file:
-    market_mapping = json.load(file)
-
 ### LOADING FX TIME SERIES
 fx_series = pd.read_csv("FX_2024-06-02.csv")
 fx_series['DATE'] = pd.to_datetime(fx_series['DATE'])
@@ -23,6 +19,10 @@ fx_series.set_index('DATE', inplace=True)
 price_series_untreated = pd.read_csv("all_markets_2024-06-02.csv")
 price_series_untreated['DATE'] = pd.to_datetime(price_series_untreated['DATE'])
 price_series_untreated.set_index('DATE', inplace=True)
+
+### MARKETS MAPPING JSON
+with open('markets_mapping.JSON', 'r') as file:
+    market_mapping = json.load(file)
 
 price_series_untreated = price_series_untreated.loc[price_series_untreated.index > "2007-01-01"] # to be parametrized
 price_series = portfolioAllocation.forexPriceTransformation(pricesTimeSeriesDf=price_series_untreated,
