@@ -33,7 +33,7 @@ model_selection = st.selectbox(label="Select optimization model", options=implem
 
 with st.container(border=True):
     with st.expander("Model settings"):
-        mkts_column, other_settings = st.columns([3,1])
+        mkts_column, other_settings = st.columns([3,2])
         with other_settings:
             initial_sampling_date = st.date_input("Select the initial sampling date", min_value=price_series_untreated.index.min(), value=pd.to_datetime("2007-01-01"), max_value=price_series_untreated.index.max())
             final_sampling_date = st.date_input("Select the final sampling date", min_value=price_series_untreated.index.min(), max_value=price_series_untreated.index.max())
