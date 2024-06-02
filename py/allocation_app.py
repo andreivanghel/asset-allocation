@@ -5,16 +5,31 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 from allocationModel import markowitzModel
 import portfolioAllocation
-from datetime import datetime
 import json
 
 ############## INPUT DATA LOADING
 implemented_models = ["Markowitz", "Black-Litterman"]
 
+### MARKETS MAPPING JSON
+with open('markets_mapping.JSON', 'r') as file:
+    market_mapping = json.load(file)
+
+### LOADING FX TIME SERIES
+fx_series = pd.read_csv("FX_2024-06-02.csv")
+fx_series['DATE'] = pd.to_datetime(fx_series['DATE'])
+fx_series.set_index('DATE', inplace=True)
+
 ### LOADING PRICE TIME SERIES
-price_series = pd.read_csv("all_markets_2024-05-29.csv")
-price_series['DATE'] = pd.to_datetime(price_series['DATE'])
-price_series.set_index('DATE', inplace=True)
+price_series_untreated = pd.read_csv("all_markets_2024-06-02.csv")
+price_series_untreated['DATE'] = pd.to_datetime(price_series_untreated['DATE'])
+price_series_untreated.set_index('DATE', inplace=True)
+
+price_series_untreated = price_series_untreated.loc[price_series_untreated.index > "2007-01-01"] # to be parametrized
+price_series = portfolioAllocation.forexPriceTransformation(pricesTimeSeriesDf=price_series_untreated,
+                                                            forexTimeSeriesDf=fx_series,
+                                                            markets_mapping=market_mapping,
+                                                            analysisCurrency="USD") # analysis currency to be parametrized
+
 market_names_full = price_series.columns.values
 selected_markets_bool = [True] * len(market_names_full)
 
@@ -64,11 +79,6 @@ with st.container(border=True):
         sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", ax=ax)
         ax.set_title('Correlation Matrix')
         st.pyplot(cmat)
-
-
-### MARKETS MAPPING JSON
-with open('markets_mapping.JSON', 'r') as file:
-    market_mapping = json.load(file)
 
 
 
