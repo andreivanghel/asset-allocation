@@ -24,18 +24,26 @@ price_series_untreated.set_index('DATE', inplace=True)
 with open('markets_mapping.JSON', 'r') as file:
     market_mapping = json.load(file)
 
-price_series_untreated = price_series_untreated.loc[price_series_untreated.index > "2007-01-01"] # to be parametrized
-price_series = portfolioAllocation.forexPriceTransformation(pricesTimeSeriesDf=price_series_untreated,
-                                                            forexTimeSeriesDf=fx_series,
-                                                            markets_mapping=market_mapping,
-                                                            analysisCurrency="USD") # analysis currency to be parametrized
 
-market_names_full = price_series.columns.values
-selected_markets_bool = [True] * len(market_names_full)
 
 ### SELECTING MARKETS
 st.title("Asset Allocation Model(s)")
 model_selection = st.selectbox(label="Select optimization model", options=implemented_models, index=None)
+
+
+with st.container(border=True):
+    st.write("Sampling period")
+    initial_sampling_date = st.date_input("Select the initial date", min_value=price_series_untreated.dropna().index.min(), max_value=price_series_untreated.dropna().index.max() + 1)
+    final_sampling_date = st.date_input("Select the final date", min_value=price_series_untreated.dropna().index.min() + 1, max_value=price_series_untreated.dropna().index.max())
+
+    price_series_untreated = price_series_untreated.loc[price_series_untreated.index >= initial_sampling_date & price_series_untreated.index <= final_sampling_date] # to be parametrized
+    price_series = portfolioAllocation.forexPriceTransformation(pricesTimeSeriesDf=price_series_untreated,
+                                                                forexTimeSeriesDf=fx_series,
+                                                                markets_mapping=market_mapping,
+                                                                analysisCurrency="USD") # analysis currency to be parametrized
+
+    market_names_full = price_series.columns.values
+    selected_markets_bool = [True] * len(market_names_full)
 
 with st.container(border=True):
     col1, col2 = st.columns(2)
