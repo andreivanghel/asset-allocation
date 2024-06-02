@@ -35,9 +35,8 @@ with st.container(border=True):
     with st.expander("Model settings"):
         mkts_column, other_settings = st.columns([3,1])
         with other_settings:
-            st.write("Sampling period")
-            initial_sampling_date = st.date_input("Select the initial date", min_value=price_series_untreated.index.min(), value=pd.to_datetime("2007-01-01"), max_value=price_series_untreated.index.max())
-            final_sampling_date = st.date_input("Select the final date", min_value=price_series_untreated.index.min(), max_value=price_series_untreated.index.max())
+            initial_sampling_date = st.date_input("Select the initial sampling date", min_value=price_series_untreated.index.min(), value=pd.to_datetime("2007-01-01"), max_value=price_series_untreated.index.max())
+            final_sampling_date = st.date_input("Select the final sampling date", min_value=price_series_untreated.index.min(), max_value=price_series_untreated.index.max())
             initial_sampling_date = pd.to_datetime(initial_sampling_date)
             final_sampling_date = pd.to_datetime(final_sampling_date)
             price_series_untreated = price_series_untreated.loc[(price_series_untreated.index >= initial_sampling_date) & (price_series_untreated.index <= final_sampling_date)] 
