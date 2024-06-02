@@ -42,7 +42,7 @@ yahoo_sourcing <- function(asset_class_yahoo_subset, local_save = TRUE, data_sav
   }
   
   yahoo_data <- asset_class_yahoo_subset %>% pull(index_id_in_ds) %>% 
-    lapply(FUN = function(symbol) getSymbols(Symbols = symbol, auto.assign = FALSE))
+    lapply(FUN = function(symbol) getSymbols(Symbols = symbol, auto.assign = FALSE, from = "1900-01-01"))
   
   
   custom_output <- function(data, market, index_name, symbol){
@@ -184,3 +184,7 @@ dataSourcing <- function(assetClassConfig, data_saving_config, sp_username = NUL
   
   return(NULL)
 }
+
+
+
+

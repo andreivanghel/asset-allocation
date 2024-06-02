@@ -20,6 +20,8 @@ source("./R/02_DataPreProcessing.R")
 asset_classes_config <- fromJSON("markets_mapping.JSON")
 asset_classes_config <- asset_classes_config[asset_classes_config %>% sapply(FUN = function(x) !is_empty(x))]
 
+fx_config <- fromJSON("fx_mapping.JSON")
+
 data_saving_config <- fromJSON("data_saving.JSON")
 
 sourcing_date <- Sys.Date()
@@ -32,6 +34,8 @@ sapply(X = asset_classes_config,
                                       sp_username = "andreivanghel@gmail.com",
                                       sp_password = ))
 
+fx_config$fx %>% yahoo_sourcing(data_saving_config = data_saving_config$raw_data_saving, local_save = TRUE)
+
 
 # data loading ------------------------------------------------------------
 
@@ -40,12 +44,15 @@ raw_data <- lapply(X = asset_classes_config,
                                                  data_saving_config = data_saving_config$raw_data_saving,
                                                  sourcingDate = sourcing_date))
 
+raw_data_fx <- dataLoading(assetClassConfig = fx_config$fx,
+                           data_saving_config = data_saving_config$raw_data_saving,
+                           sourcingDate = sourcing_date)
 
 # data pre processing -----------------------------------------------------
 
 processed_data <- lapply(X = raw_data, 
                          FUN = function(x) preProcessing(x))
-
+processed_data_fx <- raw_data_fx %>% preProcessing()
 
 # export pre processed data -----------------------------------------------
 

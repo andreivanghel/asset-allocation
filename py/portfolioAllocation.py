@@ -23,6 +23,37 @@ def validate(pricesTimeSeriesDf: pd.DataFrame):
     print(table)
     pass
 
+def forexPriceTransformation(pricesTimeSeriesDf: pd.DataFrame, forexTimeSeriesDf: pd.DataFrame, markets_mapping: dict, analysisCurrency: str = "USD"):
+    price = pricesTimeSeriesDf.copy()
+    markets_in_df = price.columns
+
+    markets_mapping_filt = {key: value for key, value in markets_mapping.items() if value}
+    markets = []
+    currencies = []
+
+    for category in markets_mapping_filt.values():
+        for item in category:
+            markets.append(item['market'])
+            currencies.append(item['currency'])
+    
+    markets_currency = pd.DataFrame({'market': markets, 'currency': currencies})
+    markets_currency = markets_currency[markets_currency["market"].isin(markets_in_df)]
+
+    for market in markets_in_df:
+        currency = str(markets_currency.loc[markets_currency["market"] == market, "currency"].values[0])
+
+        if currency != analysisCurrency:
+            fx_column = analysisCurrency + "_" + currency
+            fx_first_date = forexTimeSeriesDf[fx_column].dropna().index.min()
+
+            price.loc[price.index < fx_first_date, market] = np.nan # NaN for observations without FX related obs.
+            obs_dates = price[market].dropna().index
+
+            price.loc[obs_dates, market] = price.loc[obs_dates, market] * forexTimeSeriesDf.loc[obs_dates, fx_column]
+
+    return price
+
+
 def getLogReturns(pricesTimeSeriesDf: pd.DataFrame):
     logRet = pricesTimeSeriesDf.apply(lambda x: np.log(x) - np.log(x.shift(1)))
     return logRet
@@ -48,12 +79,12 @@ def getCovarianceMatrix(logReturnsDf: pd.DataFrame, calendarized: bool = False):
     return covmat
 
 def portfolio_returns(weights, expected_returns):
-            returns = np.dot(weights, expected_returns)
-            return returns
+    returns = np.dot(weights, expected_returns)
+    return returns
 
 def portfolio_volatility(weights, covariance_matrix):
-            volatility = np.sqrt(np.dot(weights.T, np.dot(covariance_matrix, weights)))
-            return volatility
+    volatility = np.sqrt(np.dot(weights.T, np.dot(covariance_matrix, weights)))
+    return volatility
 
 def calculate_max_sharpe_ratio(returns, volatilities, risk_free_rate):
     sharpe_ratios = (returns - risk_free_rate) / volatilities
