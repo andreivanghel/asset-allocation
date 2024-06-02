@@ -36,9 +36,9 @@ with st.container(border=True):
     in_date_col, fin_date_col = st.columns(2)
 
     with in_date_col:
-        initial_sampling_date = st.date_input("Select the initial date", min_value="2000-01-01", value="2007-01-01")
+        initial_sampling_date = st.date_input("Select the initial date", min_value=pd.to_datetime("2000-01-01"), value=pd.to_datetime("2007-01-01"))
     with fin_date_col:
-        final_sampling_date = st.date_input("Select the final date", min_value="2002-01-01")
+        final_sampling_date = st.date_input("Select the final date", min_value=pd.to_datetime("2002-01-01"))
     initial_sampling_date = pd.to_datetime(initial_sampling_date)
     final_sampling_date = pd.to_datetime(final_sampling_date)
 
