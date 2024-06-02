@@ -33,8 +33,12 @@ model_selection = st.selectbox(label="Select optimization model", options=implem
 
 with st.container(border=True):
     st.write("Sampling period")
-    initial_sampling_date = st.date_input("Select the initial date", min_value=price_series_untreated.dropna().index.min(), max_value=price_series_untreated.dropna().index.max())
-    final_sampling_date = st.date_input("Select the final date", min_value=price_series_untreated.dropna().index.min(), max_value=price_series_untreated.dropna().index.max())
+    in_date_col, fin_date_col = st.columns(2)
+
+    with in_date_col:
+        initial_sampling_date = st.date_input("Select the initial date", min_value="2000-01-01", value="2007-01-01")
+    with fin_date_col:
+        final_sampling_date = st.date_input("Select the final date", min_value="2002-01-01")
     initial_sampling_date = pd.to_datetime(initial_sampling_date)
     final_sampling_date = pd.to_datetime(final_sampling_date)
 
@@ -58,7 +62,7 @@ with st.container(border=True):
 
     with st.expander("Select markets"):
         for index, market in enumerate(market_names_full):
-            selected_markets_bool[index] = st.checkbox(label=market)
+            selected_markets_bool[index] = st.checkbox(label=market, value = True)
 
     plot_right_lim = np.sqrt(np.diag(portfolioAllocation.getCovarianceMatrix(portfolioAllocation.getLogReturns(price_series), calendarized=calendarized)*252)).max()
 
