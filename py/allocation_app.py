@@ -32,38 +32,29 @@ model_selection = st.selectbox(label="Select optimization model", options=implem
 
 
 with st.container(border=True):
-    st.write("Sampling period")
-    in_date_col, fin_date_col = st.columns(2)
-
-    with in_date_col:
+    mkts_column, other_settings = st.columns(2, [3,1])
+    with other_settings:
+        st.write("Sampling period")
         initial_sampling_date = st.date_input("Select the initial date", min_value=price_series_untreated.index.min(), value=pd.to_datetime("2007-01-01"), max_value=price_series_untreated.index.max())
-    with fin_date_col:
         final_sampling_date = st.date_input("Select the final date", min_value=price_series_untreated.index.min(), max_value=price_series_untreated.index.max())
-    initial_sampling_date = pd.to_datetime(initial_sampling_date)
-    final_sampling_date = pd.to_datetime(final_sampling_date)
-
-    price_series_untreated = price_series_untreated.loc[(price_series_untreated.index >= initial_sampling_date) & (price_series_untreated.index <= final_sampling_date)] # to be parametrized
-    price_series = portfolioAllocation.forexPriceTransformation(pricesTimeSeriesDf=price_series_untreated,
-                                                                forexTimeSeriesDf=fx_series,
-                                                                markets_mapping=market_mapping,
-                                                                analysisCurrency="USD") # analysis currency to be parametrized
-
-    market_names_full = price_series.columns.values
-    selected_markets_bool = [True] * len(market_names_full)
-
-with st.container(border=True):
-    col1, col2 = st.columns(2)
-
-    with col1:
+        initial_sampling_date = pd.to_datetime(initial_sampling_date)
+        final_sampling_date = pd.to_datetime(final_sampling_date)
+        price_series_untreated = price_series_untreated.loc[(price_series_untreated.index >= initial_sampling_date) & (price_series_untreated.index <= final_sampling_date)] 
+        price_series = portfolioAllocation.forexPriceTransformation(pricesTimeSeriesDf=price_series_untreated,
+                                                                    forexTimeSeriesDf=fx_series,
+                                                                    markets_mapping=market_mapping,
+                                                                    analysisCurrency="USD") # analysis currency to be parametrized
         risk_free_rate = st.number_input(label = "Risk-free rate", min_value=0.0, max_value=0.10,format="%0.3f")
-    with col2:
         short_selling = st.toggle(label="Short selling", value = False)
         calendarized = st.toggle(label="'Calendarized' log-returns", value = True)
 
-    with st.expander("Select markets"):
+    with mkts_column:
+        market_names_full = price_series.columns.values
+        selected_markets_bool = [True] * len(market_names_full)
         for index, market in enumerate(market_names_full):
             selected_markets_bool[index] = st.checkbox(label=market, value = True)
 
+    
     plot_right_lim = np.sqrt(np.diag(portfolioAllocation.getCovarianceMatrix(portfolioAllocation.getLogReturns(price_series), calendarized=calendarized)*252)).max()
 
 
