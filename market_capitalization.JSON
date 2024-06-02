@@ -1,6 +1,6 @@
 {
-    "march_2024":{
-        "FX_SOURCE_DATE": "2024-03-31",
+    "may_2024":{
+        "FX_SOURCE_DATE": "2024-05-31",
         "Cash":[
             
         ],
@@ -10,7 +10,7 @@
                 "index_name":"S&P U.S. Government/Credit Bond Index",
                 "data_source":"sp",
                 "url":"https://www.spglobal.com/spdji/en/indices/fixed-income/sp-us-government-credit-bond-index/",
-                "market_cap": "24158893.98",
+                "market_cap": "24409787.45",
                 "currency": "USD",
                 "unit": "mln"
             },
@@ -19,7 +19,7 @@
                 "index_name":"S&P Africa Sovereign Bond Index",
                 "data_source":"sp",
                 "url":"https://www.spglobal.com/spdji/en/indices/fixed-income/sp-africa-sovereign-bond-index/",
-                "market_cap": "302742.25",
+                "market_cap": "24409787.45",
                 "currency": "USD",
                 "unit": "mln"
             },
@@ -28,7 +28,7 @@
                 "index_name":"S&P China Government Bond Index",
                 "data_source":"sp",
                 "url":"https://www.spglobal.com/spdji/en/indices/fixed-income/sp-china-government-bond-index/",
-                "market_cap": "13019730",
+                "market_cap": "13430966.31",
                 "currency": "USD",
                 "unit": "mln"
             },
@@ -37,7 +37,7 @@
                 "index_name":"S&P Eurozone Sovereign Bond Index",
                 "data_source":"sp",
                 "url":"https://www.spglobal.com/spdji/en/indices/fixed-income/sp-eurozone-sovereign-bond-index/",
-                "market_cap": "8629024",
+                "market_cap": "8001956.88",
                 "currency": "USD",
                 "unit": "mln"
             }
@@ -48,7 +48,7 @@
                 "index_name":"S&P 500",
                 "data_source":"yahoo",
                 "url":"https://finance.yahoo.com/quote/%5EGSPC/",
-                "market_cap": "42929000",
+                "market_cap": "46502465.69",
                 "currency": "USD",
                 "unit": "mln"
             },
@@ -57,7 +57,7 @@
                 "index_name":"Russell 2000",
                 "data_source":"yahoo",
                 "url":"https://finance.yahoo.com/quote/%5ERUT",
-                "market_cap": "9367120",
+                "market_cap": "8532000",
                 "currency": "USD",
                 "unit": "mln"
             },
@@ -66,7 +66,7 @@
                 "index_name":"Euronext 100",
                 "data_source":"yahoo",
                 "url":"https://finance.yahoo.com/quote/%5EN100",
-                "market_cap": "4091029",
+                "market_cap": "4175000",
                 "currency": "USD",
                 "unit": "mln"
             },
@@ -75,7 +75,7 @@
                 "index_name":"Hang Seng Index",
                 "data_source":"yahoo",
                 "url":"https://finance.yahoo.com/quote/%5EHSI",
-                "market_cap": "3860930",
+                "market_cap": "4097777",
                 "currency": "USD",
                 "unit": "mln"
             },
@@ -84,7 +84,7 @@
                 "index_name":"S&P Asia Pacific LargeMidCap",
                 "data_source":"sp",
                 "url":"https://www.spglobal.com/spdji/en/indices/equity/sp-asia-pacific-largemidcap/",
-                "market_cap": "9551942",
+                "market_cap": "9195910.06",
                 "currency": "USD",
                 "unit": "mln"
             },
@@ -93,7 +93,7 @@
                 "index_name":"S&P LargeMidCap",
                 "data_source":"sp",
                 "url":"https://www.spglobal.com/spdji/en/indices/equity/sp-emerging-largemidcap/",
-                "market_cap": "21265691",
+                "market_cap": "21616313.65",
                 "currency": "USD",
                 "unit": "mln"
             }

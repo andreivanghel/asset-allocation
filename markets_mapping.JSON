@@ -7,28 +7,32 @@
       "index_name": "S&P U.S. Government/Credit Bond Index", 
       "data_source": "sp",
       "index_id_in_ds": "92351588",
-      "url": "https://www.spglobal.com/spdji/en/indices/fixed-income/sp-us-government-credit-bond-index/"
+      "url": "https://www.spglobal.com/spdji/en/indices/fixed-income/sp-us-government-credit-bond-index/",
+      "currency": "usd"
     },
     {
       "market": "AFRICA_SOVEREIGN_BOND", 
       "index_name": "S&P Africa Sovereign Bond Index", 
       "data_source": "sp",
       "index_id_in_ds": "92024573",
-      "url": "https://www.spglobal.com/spdji/en/indices/fixed-income/sp-africa-sovereign-bond-index/"
+      "url": "https://www.spglobal.com/spdji/en/indices/fixed-income/sp-africa-sovereign-bond-index/",
+      "currency": "usd"
     },
     {
       "market": "CHINA_GOV_BOND", 
       "index_name": "S&P China Government Bond Index", 
       "data_source": "sp",
       "index_id_in_ds": "91880649",
-      "url": "https://www.spglobal.com/spdji/en/indices/fixed-income/sp-china-government-bond-index/"
+      "url": "https://www.spglobal.com/spdji/en/indices/fixed-income/sp-china-government-bond-index/",
+      "currency": "cny"
     },
     {
       "market": "EURO_SOVEREIGN_BOND", 
       "index_name": "S&P Eurozone Sovereign Bond Index", 
       "data_source": "sp",
       "index_id_in_ds": "92033429",
-      "url": "https://www.spglobal.com/spdji/en/indices/fixed-income/sp-eurozone-sovereign-bond-index/"
+      "url": "https://www.spglobal.com/spdji/en/indices/fixed-income/sp-eurozone-sovereign-bond-index/",
+      "currency": "usd"
     }
   ],
   "Equities": [
@@ -37,42 +41,48 @@
       "index_name": "S&P 500", 
       "data_source": "yahoo",
       "index_id_in_ds": "^GSPC",
-      "url": "https://finance.yahoo.com/quote/%5EGSPC/"
+      "url": "https://finance.yahoo.com/quote/%5EGSPC/",
+      "currency": "usd"
     },
     {
       "market": "USA_SMALL_CAP", 
       "index_name": "Russell 2000",
       "data_source": "yahoo",
       "index_id_in_ds": "^RUT",
-      "url": "https://finance.yahoo.com/quote/%5ERUT"
+      "url": "https://finance.yahoo.com/quote/%5ERUT",
+      "currency": "usd"
     },
     {
       "market": "EUROPE_LARGE_CAP", 
       "index_name": "Euronext 100", 
       "data_source": "yahoo",
       "index_id_in_ds": "^N100",
-      "url": "https://finance.yahoo.com/quote/%5EN100"
+      "url": "https://finance.yahoo.com/quote/%5EN100",
+      "currency": "eur"
     },
     {
       "market": "HONG_KONG_LARGE_CAP", 
       "index_name": "Hang Seng Index", 
       "data_source": "yahoo",
       "index_id_in_ds": "^HSI",
-      "url": "https://finance.yahoo.com/quote/%5EHSI"
+      "url": "https://finance.yahoo.com/quote/%5EHSI",
+      "currency": "hkd"
     },
     {
       "market": "ASIA_PACIFIC_LARGE_MID_CAP", 
       "index_name": "S&P Asia Pacific LargeMidCap", 
       "data_source": "sp",
       "index_id_in_ds": "348170",
-      "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-asia-pacific-largemidcap/"
+      "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-asia-pacific-largemidcap/",
+      "currency": "usd"
     },
     {
       "market": "EMERGING_MARKETS_LARGE_MID_CAP", 
       "index_name": "S&P LargeMidCap", 
       "data_source": "sp",
       "index_id_in_ds": "348204",
-      "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-emerging-largemidcap/"
+      "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-emerging-largemidcap/",
+      "currency": "usd"
     }
   ],
   "Alternative Investments": [
