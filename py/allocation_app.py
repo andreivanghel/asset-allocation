@@ -29,6 +29,7 @@ with open('markets_mapping.JSON', 'r') as file:
 ### SELECTING MARKETS
 st.title("Asset Allocation Model(s)")
 st.markdown("Author: Andrei G. Vanghel")
+st.write("")
 model_selection = st.selectbox(label="Select optimization model", options=implemented_models, index=None)
 
 
