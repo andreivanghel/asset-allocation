@@ -1,0 +1,25 @@
+{
+    "fx": [
+        {
+            "market": "USD_HKD", 
+            "index_name": "USD/HKD", 
+            "data_source": "yahoo",
+            "index_id_in_ds": "HKD=X",
+            "url": "https://it.finance.yahoo.com/quote/HKD%3DX/"
+        },
+        {
+            "market": "USD_CNY", 
+            "index_name": "USD/CNY", 
+            "data_source": "yahoo",
+            "index_id_in_ds": "CNY=X",
+            "url": "https://it.finance.yahoo.com/quote/CNY%3DX"
+        },
+        {
+            "market": "USD_EUR", 
+            "index_name": "USD/EUR", 
+            "data_source": "yahoo",
+            "index_id_in_ds": "EUR=X",
+            "url": "https://it.finance.yahoo.com/quote/EUR=X/"
+        }
+    ]
+}
