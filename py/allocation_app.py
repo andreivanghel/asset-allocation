@@ -51,6 +51,7 @@ with st.container(border=True):
             calendarized = st.toggle(label="'Calendarized' log-returns", value = True)
 
         with mkts_column:
+            st.write("Market selection:")
             market_names_full = price_series.columns.values
             selected_markets_bool = [True] * len(market_names_full)
             for index, market in enumerate(market_names_full):
