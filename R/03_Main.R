@@ -50,10 +50,10 @@ raw_data_fx <- dataLoading(assetClassConfig = fx_config$fx,
 
 # data pre processing -----------------------------------------------------
 
-processed_data <- lapply(X = raw_data, 
+processed_data_assets <- lapply(X = raw_data, 
                          FUN = function(x) preProcessing(x))
-processed_data_fx <- raw_data_fx %>% preProcessing()
-
+processed_data_fx <- raw_data_fx %>% preProcessing() %>% fxProcessing()
+processed_data <- c(processed_data_assets, FX = list(processed_data_fx))
 # export pre processed data -----------------------------------------------
 
 export_processed_asset_class <- function(asset_class, processed_data, output_dir){
@@ -100,8 +100,8 @@ list(asset_class = names(processed_data),
 ##### TO BE IMPROVED
 
 tmp = list()
-for(i in 1:length(processed_data)){
-  tmp = c(tmp, processed_data[[i]])
+for(i in 1:length(processed_data_assets)){
+  tmp = c(tmp, processed_data_assets[[i]])
 }
 processed_data_rename <- tmp %>% names() %>% 
   lapply(FUN = function(market_name) tmp[[market_name]] %>% mutate(PRICE = as.numeric(PRICE)) %>% rename(!!market_name := !!as.symbol("PRICE")))
