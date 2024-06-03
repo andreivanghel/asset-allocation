@@ -91,3 +91,29 @@ def calculate_max_sharpe_ratio(returns, volatilities, risk_free_rate):
     max_sharpe_idx = np.argmax(sharpe_ratios)
     return returns[max_sharpe_idx], volatilities[max_sharpe_idx]
 
+def marketCapTransformation(market_capitalization: dict, forexTimeSeriesDf: pd.DataFrame, markets_mapping: dict, analysisCurrency: str = "USD") -> pd.DataFrame:
+    market_capitalization = {key: value for key, value in market_capitalization.items() if value}
+
+    fx_source_date = pd.to_datetime(market_capitalization['FX_SOURCE_DATE'])
+
+    market_capitalization.pop('FX_SOURCE_DATE', None)
+
+    markets = []
+    mkt_capp = []
+
+    for category in market_capitalization.values():
+            for item in category:
+                conversion = 1
+                if item['unit'] == "mln": conversion = 1000000
+                if item['unit'] == "bln": conversion = 1000000000
+                markets.append(item['market'])
+                mkt_capp.append(float(item['market_cap']) * conversion)
+
+    market_capitalization_df = pd.DataFrame([mkt_capp], columns=markets, index=[fx_source_date])
+    market_capitalization_new = market_capitalization_df.copy()
+
+    fx_converted_mkt_cap = forexPriceTransformation(pricesTimeSeriesDf=market_capitalization_new,
+                                                    forexTimeSeriesDf=forexTimeSeriesDf,
+                                                    markets_mapping=markets_mapping,
+                                                    analysisCurrency=analysisCurrency)
+    return(fx_converted_mkt_cap)
