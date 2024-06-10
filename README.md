@@ -1,4 +1,5 @@
 # READ ME - Asset Allocation project
+### ---> SELECT 'streamlit_application' branch for the most up to date code!
 
 ## Module 1 (R) - Data gathering and pre-processing
 These scripts connect to various sources (based on parametrization from markets_mapping.JSON) in order to: 
